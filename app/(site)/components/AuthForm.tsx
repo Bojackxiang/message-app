@@ -9,7 +9,7 @@ import Input from "@/app/components/inputs/Input";
 import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { signIn, useSession} from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 type Variant = "LOGIN" | "REGISTER";
 
@@ -47,7 +47,10 @@ const AuthForm = () => {
       axios
         .post("/api/register", data)
         .then(() => {
-          toast.success("Register success");
+          toast.success("Register success, redirecting to login page");
+          setTimeout(() => {
+            setVariant("LOGIN");
+          }, 1000);
         })
         .catch((err) => {
           toast.error("Something wrong");
@@ -90,8 +93,8 @@ const AuthForm = () => {
 
   useEffect(() => {
     console.log("session", session);
-    if (session?.status === 'authenticated') {
-      router.push('/users')
+    if (session?.status === "authenticated") {
+      router.push("/users");
     }
   }, [session?.status, router]);
 
