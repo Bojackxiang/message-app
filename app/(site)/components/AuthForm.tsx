@@ -8,6 +8,8 @@ import Button from "@/app/components/Button";
 import Input from "@/app/components/inputs/Input";
 import React, { useCallback, useState } from "react";
 import axios from "axios";
+import { toast } from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 type Variant = "LOGIN" | "REGISTER";
 
@@ -28,24 +30,26 @@ const AuthForm = () => {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
     if (variant === "LOGIN") {
-      // login(data.email, data.password);
-      axios
-        .post("/api/auth/login", data)
-        .then((res) => {
-          console.log("res", res);
+      signIn("credentials", { redirect: false, ...data })
+        .then((response) => {
+          if (response?.error) {
+            throw new Error(response.error);
+          } else {
+            toast.success("Login success");
+          }
         })
-        .catch((err) => {
-          console.log("err", err);
-        })
-        .finally(() => setIsLoading(false));
+        .catch((e) => {
+          toast.error(`Something wrong: ${e.message} `);
+          setIsLoading(false);
+        });
     } else {
       axios
         .post("/api/register", data)
-        .then((res) => {
-          console.log("res", res);
+        .then(() => {
+          toast.success("Register success");
         })
         .catch((err) => {
-          console.log("err", err);
+          toast.error("Something wrong");
         })
         .finally(() => setIsLoading(false));
     }
@@ -55,17 +59,20 @@ const AuthForm = () => {
   const socialAction = (action: string) => {
     setIsLoading(true);
 
-    // signIn(action, { redirect: false })
-    //   .then((callback) => {
-    //     if (callback?.error) {
-    //       toast.error("Invalid credentials!");
-    //     }
+    signIn(action, { redirect: false })
+      .then((callback) => {
+        if (callback?.error) {
+          toast.error("unable to login with you social account");
+          toast.error("Invalid credentials!");
+        }
 
-    //     if (callback?.ok) {
-    //       router.push("/conversations");
-    //     }
-    //   })
-    //   .finally(() => setIsLoading(false));
+        toast.success("Login success");
+
+        if (callback?.ok) {
+          router.push("/conversations");
+        }
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const {
@@ -138,7 +145,7 @@ const AuthForm = () => {
             </div>
           </div>
 
-          <div className="mt-6 flex gap-2">
+          <div className="mt-6 flex gap-2 justify-between">
             <AuthSocialButton
               icon={BsGithub}
               onClick={() => socialAction("github")}
