@@ -1,12 +1,13 @@
 "use client";
 
+import { BsGithub, BsGoogle } from "react-icons/bs";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import AuthSocialButton from "./AuthSocialButton";
 import Button from "@/app/components/Button";
 import Input from "@/app/components/inputs/Input";
-import { useRouter } from "next/navigation";
 import React, { useCallback, useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import AuthSocialButton from "./AuthSocialButton";
-import { BsGithub, BsGoogle } from "react-icons/bs";
+import axios from "axios";
 
 type Variant = "LOGIN" | "REGISTER";
 
@@ -25,14 +26,30 @@ const AuthForm = () => {
   }, [variant]);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
     setIsLoading(true);
     if (variant === "LOGIN") {
       // login(data.email, data.password);
+      axios
+        .post("/api/auth/login", data)
+        .then((res) => {
+          console.log("res", res);
+        })
+        .catch((err) => {
+          console.log("err", err);
+        })
+        .finally(() => setIsLoading(false));
     } else {
-      // register(data.name, data.email, data.password);
+      axios
+        .post("/api/register", data)
+        .then((res) => {
+          console.log("res", res);
+        })
+        .catch((err) => {
+          console.log("err", err);
+        })
+        .finally(() => setIsLoading(false));
     }
-    setIsLoading(false);
+    // setIsLoading(false);
   };
 
   const socialAction = (action: string) => {
