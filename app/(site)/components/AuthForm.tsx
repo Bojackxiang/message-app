@@ -6,10 +6,10 @@ import { useRouter } from "next/navigation";
 import AuthSocialButton from "./AuthSocialButton";
 import Button from "@/app/components/Button";
 import Input from "@/app/components/inputs/Input";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { signIn } from "next-auth/react";
+import { signIn, useSession} from "next-auth/react";
 
 type Variant = "LOGIN" | "REGISTER";
 
@@ -18,6 +18,7 @@ const AuthForm = () => {
   const router = useRouter();
   const [variant, setVariant] = useState<Variant>("LOGIN");
   const [isLoading, setIsLoading] = useState(false);
+  const session = useSession();
 
   const toggleVariant = useCallback(() => {
     if (variant === "LOGIN") {
@@ -86,6 +87,13 @@ const AuthForm = () => {
       password: "",
     },
   });
+
+  useEffect(() => {
+    console.log("session", session);
+    if (session?.status === 'authenticated') {
+      router.push('/users')
+    }
+  }, [session?.status, router]);
 
   return (
     <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
