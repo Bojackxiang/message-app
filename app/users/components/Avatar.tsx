@@ -1,6 +1,8 @@
 "use client";
 
+import randomBgColor from "@/helpers/randomBgColor";
 import { User } from "@prisma/client";
+import clsx from "clsx";
 
 // import useActiveList from "../hooks/useActiveList";
 import Image from "next/image";
@@ -13,14 +15,19 @@ const Avatar: React.FC<AvatarProps> = ({ user }) => {
   // const { members } = useActiveList();
   // const isActive = members.indexOf(user?.email!) !== -1;
   const isActive = true;
-  console.log("user", user);
 
   return (
     <div className="relative">
       {user?.name ? (
         <>
-          <div className="relative inline-block rounded-full overflow-hiddenh-9 w-9 md:h-11 md:w-11 bg-red-300 text-center">
-            <span className="block text-xl mt-2">{user.name[0].toUpperCase()}</span>
+          <div
+            className={clsx(
+              `relative inline-block rounded-full overflow-hiddenh-9 w-9 md:h-11 md:w-11 text-center ${randomBgColor()}`
+            )}
+          >
+            <span className="block text-xl mt-2">
+              {user.name[0].toUpperCase()}
+            </span>
           </div>
         </>
       ) : (

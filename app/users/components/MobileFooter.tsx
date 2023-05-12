@@ -1,15 +1,15 @@
-'use client'
+"use client";
 
-import useRoutes from '@/app/hooks/useRoutes'
-import React from 'react'
-import MobileItem from './MobileItem';
+import useRoutes from "@/app/hooks/useRoutes";
+import React from "react";
+import MobileItem from "./MobileItem";
 
 const MobileFooter = () => {
   const routes = useRoutes();
   return (
     <div>
-      <div 
-      className="
+      <div
+        className="
         fixed 
         justify-between 
         w-full 
@@ -21,19 +21,19 @@ const MobileFooter = () => {
         border-t-[1px] 
         lg:hidden
       "
-    >
-      {routes.map((route) => (
-        <MobileItem 
-          key={route.href} 
-          href={route.href} 
-          active={route.active} 
-          icon={route.icon}
-          onClick={route.onClick}
-        />
-      ))}
+      >
+        {routes.map((route) => (
+          <MobileItem
+            key={route.href}
+            href={route.href}
+            active={route.active}
+            icon={route.icon}
+            onClick={route.onClick}
+          />
+        ))}
+      </div>
     </div>
-    </div>
-  )
-}
+  );
+};
 
-export default MobileFooter
+export default MobileFooter;
