@@ -1,9 +1,10 @@
-'use client';
+"use client";
 
 import clsx from "clsx";
 
 import useConversation from "../hooks/useConversation";
 import EmptyState from "../components/EmptyState";
+import Sidebar from "../users/components/sidebar";
 
 const Home = () => {
   const { isOpen } = useConversation();
@@ -15,7 +16,7 @@ const Home = () => {
     )}>
       <EmptyState />
     </div>
-  )
-}
+  );
+};
 
 export default Home;
