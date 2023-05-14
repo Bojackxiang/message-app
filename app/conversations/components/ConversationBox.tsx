@@ -7,7 +7,7 @@ import Avatar from "@/app/users/components/Avatar";
 import AvatarGroup from "./AvatarGroup";
 import clsx from "clsx";
 import React, { useMemo, useCallback } from "react";
-import useOtherUsers from "@/app/hooks/useOtherUsers";
+import useOtherUser from "@/app/hooks/useOtherUsers";
 
 interface ConversationBoxProps {
   data: FullConversationType;
@@ -19,7 +19,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
   selected,
 }) => {
   const router = useRouter();
-  const otherUser = useOtherUsers(data);
+  const otherUser = useOtherUser(data);
   const session = useSession();
 
   const handleClick = useCallback(() => {
@@ -56,8 +56,8 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
     <div
       onClick={handleClick}
       className={clsx(
-        ` w-full relative flex items-center space-x-3 p-3 hover:bg-neutral-100 rounded-lg transition cursor-pointer `,
-        selected ? "bg-blue-200" : "bg-white"
+        ` w-full relative flex items-center space-x-3 p-3 hover:bg-blue-200 rounded-lg transition cursor-pointer `,
+        selected ? "bg-blue-300" : "bg-white"
       )}
     >
       {data.isGroup ? (

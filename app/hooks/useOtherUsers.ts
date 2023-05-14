@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { FullConversationType } from "../types";
 import { User } from "next-auth";
 
-const useOtherUsers = (
+const useOtherUser = (
   conversations:
     | FullConversationType
     | {
@@ -23,4 +23,4 @@ const useOtherUsers = (
   return otherUser;
 };
 
-export default useOtherUsers;
+export default useOtherUser;
