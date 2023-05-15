@@ -9,7 +9,6 @@ async function ConversationIdLayout({
   return (
     // @ts-expect-error Server Component
     <Sidebar>
-      <h2>hello world</h2>
       {children}
     </Sidebar>
   );
