@@ -14,7 +14,13 @@ interface MessageBoxProps {
 const MessageBox: React.FC<MessageBoxProps> = ({ data, isLatest }) => {
   const session = useSession();
   const isOwn = data.sender.email === session.data?.user?.email;
-  const seenList = data.seenIds;
+  console.log("data", data);
+  const seenList = (data.seen || [])
+    .filter((user) => user.email !== data?.sender?.email)
+    .map((user) => user.name)
+    .join(', ');
+
+    console.log("seenList: ", seenList);
 
   const container = clsx("flex gap-3 p-4", isOwn && "justify-end");
   const avatar = clsx(isOwn && "order-2");

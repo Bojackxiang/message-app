@@ -18,8 +18,11 @@ const Body: React.FC<BodyProps> = ({ initialMessages }) => {
 
   const { conversationId } = useConversation();
 
+  // update the seen list when for all user
   useEffect(() => {
-    axios.post(`/api/conversations/${conversationId}/seen`);
+    axios.post(`/api/conversations/${conversationId}/seen`).then(resp => {
+      console.log(resp)
+    })
   }, [conversationId]);
 
   return <div className="flex-1 overflow-y-auto">
