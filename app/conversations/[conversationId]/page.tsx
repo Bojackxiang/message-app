@@ -14,7 +14,6 @@ const ConversationId = async ({ params }: { params: ConversationIdProps }) => {
   const conversation = await getConversationById(params.conversationId);
   const messages = conversation?.id ? await getMessages(conversation.id) : [];
   
-  console.log('conversation: ', conversation);
   if (!conversation) {
     return (
       <div className="lg:pl-80 h-full">

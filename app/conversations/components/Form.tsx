@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import useConversation from "@/app/hooks/useConversation";
 import axios from "axios";
@@ -43,21 +43,11 @@ const Form = () => {
           required
           placeholder="Write a message"
         />
-        <button 
-          type="submit" 
-          className="
-            rounded-full 
-            p-2 
-            bg-sky-500 
-            cursor-pointer 
-            hover:bg-sky-600 
-            transition
-          "
+        <button
+          type="submit"
+          className="rounded-full p-2 bg-sky-500 cursor-pointer hover:bg-sky-600 transition"
         >
-          <HiPaperAirplane
-            size={18}
-            className="text-white"
-          />
+          <HiPaperAirplane size={18} className="text-white" />
         </button>
       </form>
     </div>

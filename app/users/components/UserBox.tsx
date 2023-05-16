@@ -19,7 +19,6 @@ const UserBox: React.FC<UserBoxProps> = ({ data }) => {
         userId: data.id,
       })
       .then((data) => {
-        console.log(data)
         router.push(`/conversations/${data.data.id}`);
       })
       .finally(() => setLoading(false));
