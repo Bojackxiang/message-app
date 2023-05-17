@@ -7,6 +7,7 @@ import AvatarGroup from "./AvatarGroup";
 import React, { Fragment, useMemo, useState } from "react";
 import useActiveList from "@/app/hooks/useActiveList";
 import useOtherUser from "@/app/hooks/useOtherUsers";
+import ConfirmModal from "@/app/components/modals/ConfirmMOdal";
 interface ProfileDrawerProps {
   data: Conversation & {
     users: User[];
@@ -44,10 +45,13 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
 
   return (
     <>
-      {/* <ConfirmModal 
-      isOpen={confirmOpen} 
-      onClose={() => setConfirmOpen(false)}
-    /> */}
+      {/* modal */}
+      <ConfirmModal
+        isOpen={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+      />
+
+      {/* dialog */}
       <Transition.Root show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-50" onClose={onClose}>
           {/* dialog background */}
