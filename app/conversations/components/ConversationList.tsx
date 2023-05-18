@@ -7,8 +7,10 @@ import { User } from "next-auth";
 import { useRouter } from "next/navigation";
 import { MdOutlineGroupAdd } from "react-icons/md";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ConversationBox from "./ConversationBox";
+import { pusherClient } from "@/app/libs/pusher";
+import { useSession } from "next-auth/react";
 
 interface ConversationListProps {
   initialItems: FullConversationType[];
@@ -19,9 +21,45 @@ interface ConversationListProps {
 const ConversationList: React.FC<ConversationListProps> = ({
   initialItems,
 }) => {
+  const session = useSession();
   const [items, setItems] = useState(initialItems);
   const routeer = useRouter();
   const { isOpen, conversationId } = useConversation();
+
+  const currentUserEmail = session.data?.user?.email;
+
+  const conversationhandler = (conversation: FullConversationType) => {
+    // update the conversation
+    console.log("updated conversation", conversation);
+    const { id, messages } = conversation;
+
+    // update items
+    setItems((prev) => {
+      return prev.map((item) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            messages: conversation.messages,
+          };
+        }
+        return item;
+      });
+    });
+  };
+
+  useEffect(() => {
+    // subscribe to the new message
+    if (!currentUserEmail) {
+      return;
+    }
+    pusherClient.subscribe(currentUserEmail);
+    pusherClient.bind("conversation:update", conversationhandler);
+
+    return () => {
+      pusherClient.unsubscribe(currentUserEmail);
+      pusherClient.unbind("conversation:update");
+    };
+  }, [session]);
 
   return (
     <aside
@@ -41,12 +79,12 @@ const ConversationList: React.FC<ConversationListProps> = ({
           </div>
         </div>
         {items.map((item) => (
-            <ConversationBox
-              key={item.id}
-              data={item}
-              selected={conversationId === item.id}
-            />
-          ))}
+          <ConversationBox
+            key={item.id}
+            data={item}
+            selected={conversationId === item.id}
+          />
+        ))}
       </div>
     </aside>
   );
