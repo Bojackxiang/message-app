@@ -5,7 +5,7 @@ import { Message } from "@prisma/client";
 import axios from "axios";
 import React, { useRef, useState, useEffect } from "react";
 import MessageBox from "./MessageBox";
-import { FullMessageType } from "@/app/types";
+import { FullConversationType, FullMessageType } from "@/app/types";
 import { pusherClient } from "@/app/libs/pusher";
 import { find } from "lodash";
 
@@ -36,6 +36,20 @@ const Body: React.FC<BodyProps> = ({ initialMessages }) => {
     bottomRef.current?.scrollIntoView();
   };
 
+  // hand update conversation
+  const messageUpdateHandler = (newMessage: FullMessageType) => {
+    setMessages((currentMessages) => {
+      // update the seen
+      const updatedMessage = currentMessages.map((currentMessage) => {
+        if (currentMessage.id === newMessage.id) {
+          return newMessage;
+        }
+        return currentMessage;
+      });
+      return [...updatedMessage];
+    });
+  };
+
   // update the seen list when for all user
   useEffect(() => {
     axios.post(`/api/conversations/${conversationId}/seen`).then((resp) => {
@@ -45,17 +59,19 @@ const Body: React.FC<BodyProps> = ({ initialMessages }) => {
 
   // connect to the puser
   useEffect(() => {
+    // subscribe to the message update
     pusherClient.subscribe(conversationId); // sub to the conversation channnel
     bottomRef.current?.scrollIntoView();
 
     pusherClient.bind("message:new", messagehandler);
+    pusherClient.bind("message:update", messageUpdateHandler);
 
     return () => {
       pusherClient.unsubscribe(conversationId);
       pusherClient.unbind("message:new", messagehandler);
+      pusherClient.unbind("message:update", messageUpdateHandler);
     };
-  }),
-    [conversationId];
+  }, [conversationId]);
 
   return (
     <div className="flex-1 overflow-y-auto">

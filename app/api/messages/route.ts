@@ -59,7 +59,8 @@ export async function POST(request: Request) {
 
     const lastMessage =
       updatedConcersation.messages[updatedConcersation.messages.length - 1];
-
+ 
+    // handle for single / group chat 
     updatedConcersation.users.map((user: User) => {
       pusherServer.trigger(user.email!, "conversation:update", {
         id: conversationId,
