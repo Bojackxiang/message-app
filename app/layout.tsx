@@ -21,6 +21,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthContext>
           <ToasterContext />
+          {/* subscribe to channel when user login  */}
           <ActiveStatus />
           {children}
         </AuthContext>
