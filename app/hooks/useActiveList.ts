@@ -1,10 +1,17 @@
-import React from 'react'
+import { create } from 'zustand'
 
-const useActiveList = () => {
-  const activeMember: string[] = [];
-  return {
-    members: activeMember
-  };
+interface ActiveListStore {
+  members: string[];
+  add: (id: string) => void;
+  remove: (id: string) => void;
+  set: (ids: string[]) => void;
 }
 
-export default useActiveList
+const useActiveList = create<ActiveListStore>((set) => ({
+  members: [],
+  add: (id) => set((state) => ({ members: [...state.members, id] })),
+  remove: (id) => set((state) => ({ members: state.members.filter((memberId) => memberId !== id) })),
+  set: (ids) => set({ members: ids })
+}));
+
+export default useActiveList;

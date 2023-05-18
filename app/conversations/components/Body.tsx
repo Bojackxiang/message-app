@@ -53,7 +53,7 @@ const Body: React.FC<BodyProps> = ({ initialMessages }) => {
   // update the seen list when for all user
   useEffect(() => {
     axios.post(`/api/conversations/${conversationId}/seen`).then((resp) => {
-      console.log(resp);
+      // console.log(resp);
     });
   }, [conversationId]);
 

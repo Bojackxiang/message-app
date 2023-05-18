@@ -30,7 +30,6 @@ const ConversationList: React.FC<ConversationListProps> = ({
 
   const conversationhandler = (conversation: FullConversationType) => {
     // update the conversation
-    console.log("updated conversation", conversation);
     const { id, messages } = conversation;
 
     // update items
@@ -39,7 +38,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
         if (item.id === id) {
           return {
             ...item,
-            messages: conversation.messages,
+            messages
           };
         }
         return item;
